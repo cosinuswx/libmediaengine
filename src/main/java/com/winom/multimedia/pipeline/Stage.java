@@ -1,6 +1,7 @@
 package com.winom.multimedia.pipeline;
 
 import com.winom.multimedia.exceptions.ProcessException;
+import com.winom.multimedia.exceptions.ReleaseException;
 import com.winom.multimedia.exceptions.SetupException;
 import com.winom.multimedia.utils.MeLog;
 
@@ -49,7 +50,7 @@ public abstract class Stage {
     /**
      * 释放持有的资源
      */
-    public abstract void release();
+    public abstract void release() throws ReleaseException;
 
     /**
      * 设置该阶段的状态

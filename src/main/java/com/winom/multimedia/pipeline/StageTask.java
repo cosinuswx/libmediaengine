@@ -3,6 +3,7 @@ package com.winom.multimedia.pipeline;
 import android.os.SystemClock;
 
 import com.winom.multimedia.exceptions.ProcessException;
+import com.winom.multimedia.exceptions.ReleaseException;
 import com.winom.multimedia.exceptions.SetupException;
 import com.winom.multimedia.utils.MeLog;
 
@@ -84,7 +85,11 @@ public class StageTask implements Runnable {
             throw new RuntimeException(e);
         }
 
-        release();
+        try {
+            release();
+        } catch (ReleaseException e) {
+            throw new RuntimeException(e);
+        }
         MeLog.i(TAG, "[%s] stage cost: %d", mTaskName, (SystemClock.elapsedRealtime() - startTime));
     }
 
@@ -127,7 +132,7 @@ public class StageTask implements Runnable {
         MeLog.i(TAG, "task(%s) setupped", mTaskName);
     }
 
-    private void release() {
+    private void release() throws ReleaseException {
         MeLog.i(TAG, "release task(%s)", mTaskName);
         for (Stage stage : mStages) {
             stage.release();

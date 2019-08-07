@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
+import static com.winom.multimedia.utils.MediaConstants.AUDIO_FORMAT;
+
 public class AudioRecorder extends ProvidedStage<Frame> {
     private static final String TAG = "AudioRecorder";
-
-    private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
     private static final int AUDIO_FORMAT_IN_BYTE = 2;
 
     private final int mSampleRate;
