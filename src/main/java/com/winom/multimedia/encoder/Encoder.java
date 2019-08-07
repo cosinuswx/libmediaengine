@@ -105,7 +105,7 @@ public abstract class Encoder extends ProvidedStage<Frame> {
     }
 
     private void feedDataToMediaCodec() {
-        if (isAllDataReady()) {
+        if (isAllDataReady() || isDone()) {
             return;
         }
 
@@ -148,7 +148,7 @@ public abstract class Encoder extends ProvidedStage<Frame> {
 
     private void drainEncodedFrame() {
         synchronized (this) {
-            if (mWaitOutBuffers.size() >= MAX_FRAME_COUNT) {
+            if (mProcessedBuffers.size() >= MAX_FRAME_COUNT) {
                 return;
             }
         }
@@ -190,7 +190,7 @@ public abstract class Encoder extends ProvidedStage<Frame> {
         }
 
         synchronized (this) {
-            mWaitOutBuffers.add(frame);
+            mProcessedBuffers.add(frame);
         }
     }
 }

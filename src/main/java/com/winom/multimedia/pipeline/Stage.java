@@ -5,18 +5,25 @@ import com.winom.multimedia.exceptions.SetupException;
 import com.winom.multimedia.utils.MeLog;
 
 /**
- * 针对于每一帧进行处理的模块
+ * 媒体处理管道中Stage
  */
 public abstract class Stage {
     private static final String TAG = "Stage";
     protected static final int MAX_FRAME_COUNT = 3;
 
     protected enum State {
+        /**
+         * 该Stage为初始阶段
+         */
         INIT,
+
+        /**
+         * 该Stage处理设置完成
+         */
         SETUPED,
 
         /**
-         * 所有数据都准备好了，下一个节点读取完成后就算结束
+         * 该Stage的数据都准备好了
          */
         ALL_DATA_READY,
 
@@ -44,18 +51,22 @@ public abstract class Stage {
      */
     public abstract void release();
 
-    public boolean isDone() {
-        return mState == State.DONE;
-    }
-
-    protected void setState(State state) {
-        mState = state;
+    /**
+     * 设置该阶段的状态
+     * @param newState 新状态
+     */
+    protected void setState(State newState) {
+        mState = newState;
         if (State.DONE == mState) {
             MeLog.i(TAG, "[%s] is done", this);
         }
     }
 
     protected boolean isAllDataReady() {
-        return mState == State.ALL_DATA_READY || mState == State.DONE;
+        return mState == State.ALL_DATA_READY;
+    }
+
+    public boolean isDone() {
+        return mState == State.DONE;
     }
 }
