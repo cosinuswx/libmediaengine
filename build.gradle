@@ -9,7 +9,7 @@ android {
 
         externalNativeBuild {
             cmake {
-                cppFlags ""
+                cppFlags "-mfpu=neon -lz"
                 abiFilters "armeabi-v7a"
             }
         }

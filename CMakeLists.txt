@@ -1,45 +1,45 @@
-# Sets the minimum version of CMake required to build the native
-# library. You should either keep the default value or only pass a
-# value of 3.4.0 or lower.
-
 cmake_minimum_required(VERSION 3.4.1)
+project(MEDIA_ENGINE)
 
-# Creates and names a library, sets it as either STATIC
-# or SHARED, and provides the relative paths to its source code.
-# You can define multiple libraries, and CMake builds it for you.
-# Gradle automatically packages shared libraries with your APK.
+# 要求cmake查找自定义的目录，而不是单单SDK的目录
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY BOTH)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE BOTH)
 
-add_library( # Sets the name of the library.
-             mediaengine
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${MEDIA_ENGINE_SOURCE_DIR}/cmake")
 
-             # Sets the library as a shared library.
-             SHARED
+add_library(mediaengine
+            SHARED
+            src/main/cpp/utils.cpp)
 
-             # Provides a relative path to your source file(s).
-             # Associated headers in the same location as their source
-             # file are automatically included.
-             src/main/cpp/utils.cpp)
+# 指定ffmpeg所在的目录，包括include目录和lib目录
+set(FFMPEG_PATH "${MEDIA_ENGINE_SOURCE_DIR}/src/main/external/ffmpeg/armeabi-v7a")
+find_package(FFMPEG REQUIRED)
 
-# Searches for a specified prebuilt library and stores the path as a
-# variable. Because system libraries are included in the search path by
-# default, you only need to specify the name of the public NDK library
-# you want to add. CMake verifies that the library exists before
-# completing its build.
+find_library(LOGLIB log)
 
-find_library( # Sets the name of the path variable.
-              log-lib
+include_directories(
+        ${AVFORMAT_INCLUDE_DIRS}
+        ${AVCODEC_INCLUDE_DIRS}
+        ${AVUTIL_INCLUDE_DIRS}
+        ${SWSCALE_INCLUDE_DIRS}
+        ${AVFILTER_INCLUDE_DIRS}
+        ${POSTPROC_INCLUDE_DIRS}
+        ${SWRESAMPLE_INCLUDE_DIRS}
+        ${AVDEVICE_INCLUDE_DIRS}
+)
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
-
-# Specifies libraries CMake should link to your target library. You
-# can link multiple libraries, such as libraries you define in the
-# build script, prebuilt third-party libraries, or system libraries.
-
-target_link_libraries( # Specifies the target library.
-                       mediaengine
-
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib} )
+file(GLOB FFMPEG_DENPENDIES ${MEDIA_ENGINE_SOURCE_DIR}/src/main/external/libs/*.a)
+MESSAGE(STATUS ${FFMPEG_DENPENDIES})
+target_link_libraries(mediaengine
+        ${LOGLIB}
+        ${SWSCALE_LIBRARIES}
+        ${AVFORMAT_LIBRARIES}
+        ${AVCODEC_LIBRARIES}
+        ${AVFILTER_LIBRARIES}
+        ${POSTPROC_LIBRARIES}
+        ${SWRESAMPLE_LIBRARIES}
+        ${AVDEVICE_LIBRARIES}
+        ${AVUTIL_LIBRARIES}
+        ${FFMPEG_DENPENDIES}
+)
