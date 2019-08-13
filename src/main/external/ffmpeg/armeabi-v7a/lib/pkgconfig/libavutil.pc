@@ -1,0 +1,14 @@
+prefix=/root/ffmpeg/build/armeabi-v7a-neon
+exec_prefix=${prefix}
+libdir=/root/ffmpeg/build/armeabi-v7a-neon/lib
+includedir=/root/ffmpeg/build/armeabi-v7a-neon/include
+
+Name: libavutil
+Description: FFmpeg utility library
+Version: 56.31.100
+Requires: 
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavutil -pthread -lm
+Libs.private: 
+Cflags: -I${includedir}

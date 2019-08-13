@@ -13,7 +13,7 @@ add_library(mediaengine
             src/main/cpp/utils.cpp)
 
 # 指定ffmpeg所在的目录，包括include目录和lib目录
-set(FFMPEG_PATH "${MEDIA_ENGINE_SOURCE_DIR}/src/main/external/ffmpeg/armeabi-v7a")
+set(FFMPEG_PATH "${MEDIA_ENGINE_SOURCE_DIR}/src/main/external/ffmpeg/${CMAKE_ANDROID_ARCH_ABI}")
 find_package(FFMPEG REQUIRED)
 
 find_library(LOGLIB log)
@@ -29,8 +29,7 @@ include_directories(
         ${AVDEVICE_INCLUDE_DIRS}
 )
 
-file(GLOB FFMPEG_DENPENDIES ${MEDIA_ENGINE_SOURCE_DIR}/src/main/external/libs/*.a)
-MESSAGE(STATUS ${FFMPEG_DENPENDIES})
+file(GLOB FFMPEG_DENPENDIES ${MEDIA_ENGINE_SOURCE_DIR}/src/main/external/libs/${CMAKE_ANDROID_ARCH_ABI}/*.a)
 target_link_libraries(mediaengine
         ${LOGLIB}
         ${SWSCALE_LIBRARIES}

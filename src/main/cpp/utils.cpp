@@ -1,5 +1,6 @@
 #include <jni.h>
 #include <cstdlib>
+#include <cstring>
 
 extern "C"
 JNIEXPORT void JNICALL Java_com_winom_multimedia_utils_JniEntry_byteBufferCopy(JNIEnv *env,

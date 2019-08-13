@@ -193,4 +193,5 @@ public abstract class Encoder extends ProvidedStage<Frame> {
             mProcessedBuffers.add(frame);
         }
     }
+
 }
